@@ -5,12 +5,20 @@ project('paper-icon-theme',
     default_options: ['prefix=/usr']
 )
 
-install_subdir('Paper',
-    install_dir: join_paths(get_option('prefix'), 'share/icons')
+cp_cmd = 'cp -rP ../@0@ $DESTDIR@1@'
+mkdir_p = 'mkdir -p $DESTDIR/@0@'
+install_dir = join_paths(get_option('prefix'), 'share/icons')
+
+meson.add_install_script('sh', '-c',
+    mkdir_p.format(install_dir)
 )
 
-install_subdir('Paper-Mono-Dark',
-    install_dir: join_paths(get_option('prefix'), 'share/icons')
+meson.add_install_script('sh', '-c',
+    cp_cmd.format('Paper', install_dir)
+)
+
+meson.add_install_script('sh', '-c',
+    cp_cmd.format('Paper-Mono-Dark', install_dir)
 )
 
 meson.add_install_script('meson/post_install.py')
